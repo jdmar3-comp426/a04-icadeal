@@ -25,7 +25,7 @@ app.get("/app/", (req, res, next) => {
 // CREATE a new user (HTTP method POST) at endpoint /app/new/
 app.post("/app/new", (req, res) => {
 	const stmt = db.prepare("INSERT INTO userinfo (user, pass) VALUES (?, ?)")
-	const info = stmt.run('test', 'pass');
+	const info = stmt.run('test', 2);
 	console.log(info.changes)
 })
 
@@ -47,9 +47,8 @@ app.patch("/app/update/user:id", (req, res) => {
 });
 // DELETE a single user (HTTP method DELETE) at endpoint /app/delete/user/:id
 app.delete("/app/delete/user/:id", (req, res) => {
-	const stmt = db.prepare("DELETE FROM userinfo", (req))
-	const info = stmt.run();
-	console.log(info.changes)
+	const stmt = db.prepare("DELETE FROM userinfo WHERE id=?", (req)).run();
+	res.status(200).json(stmt)
 })
 // Default response for any other request
 app.use(function(req, res){
