@@ -25,9 +25,9 @@ app.get("/app/", (req, res, next) => {
 // CREATE a new user (HTTP method POST) at endpoint /app/new/
 app.post("/app/new", (req, res) => {
 	const stmt = db.prepare("INSERT INTO userinfo (user, pass) VALUES (?, ?)")
-	stmt.run(req.body.user, md5(req.body.pass));
+	const info = stmt.run(req.body.user, md5(req.body.pass));
 	res.json({"message":`1 record created: ID 3 (201)`})
-	res.json({"id":3,"user":"newtest","pass":"38a7744f5523335db845ff1976bf4747"})
+	console.log(`"id": ${info.body.id}, "user": ${info.body.user}, "pass":${info.body.pass}`)
 })
 
 // READ a list of all users (HTTP method GET) at endpoint /app/users/
